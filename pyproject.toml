@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "multiprocess-ftp"
+version = "0.1.0"
+description = "FTP client library"
+authors = ["Chris K <chrisk60331@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+ftputil = "^5.0.1"
+boto3 = "^1.17.105"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.4"
+coverage = "^5.5"
+black = "^21.6b0"
+isort = "^5.9.1"
+pylint = "^2.9.3"
+bandit = "^1.7.0"
+pydocstyle = "^6.1.1"
+flake8 = "^3.9.2"
+mypy = "^0.910"
+pre-commit = "^2.13.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
