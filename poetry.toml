@@ -1,0 +1,3 @@
+
+[repositories.infra]
+url = "https://projectblue-366471154017.d.codeartifact.us-east-1.amazonaws.com/pypi/ck-test/"

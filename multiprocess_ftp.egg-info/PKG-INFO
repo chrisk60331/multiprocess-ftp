@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: multiprocess-ftp
+Version: 0.2.0
+Summary: FTP client library
+Home-page: UNKNOWN
+Author: Chris K
+Author-email: chrisk60331@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Python: >=3.6.9,<4.0.0
+
+UNKNOWN
+

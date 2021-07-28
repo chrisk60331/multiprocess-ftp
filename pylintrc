@@ -1,0 +1,25 @@
+[MASTER]
+init-hook='import sys; sys.path.append(".")'
+
+[MESSAGES CONTROL]
+disable=bad-continuation,
+    duplicate-code,
+    consider-using-with,
+    no-member,
+    import-outside-toplevel,
+    too-few-public-methods,
+    too-many-instance-attributes,
+    attribute-defined-outside-init,
+    too-many-arguments
+
+[BASIC]
+no-docstring-rgx = test_.+
+good-names =
+    s3,
+    i,
+
+[MISCELLANEOUS]
+notes = FIXME,XXX,TODO
+
+[EXCEPTIONS]
+overgeneral-exceptions = Exception

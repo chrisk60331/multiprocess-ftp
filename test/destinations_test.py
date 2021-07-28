@@ -1,25 +1,62 @@
-from unittest.mock import patch
+"""Test suite for destinations classes."""
+from unittest.mock import Mock, patch
+
+import pytest
 
 SOURCE_PATH = "multiprocess_ftp.destinations"
 
 
-def test_s3_destination_join_path():
+@pytest.mark.parametrize(
+    "expected, bucket, key, suffix",
+    [
+        ("spam/eggs", "eggs", "spam", "eggs"),
+        (
+            "blessed/are/the/chesemakers",
+            "eggs",
+            "blessed/are/the/",
+            "chesemakers",
+        ),
+        ("bring/us/a/shrubbery", "spam", "bring/us/a/", "/shrubbery/"),
+    ],
+)
+def test_s3_destination_join_path(expected, bucket, key, suffix):
     from multiprocess_ftp.destinations import S3Destination
 
-    expected = "spam/eggs"
-    dest = S3Destination("eggs", "spam")
+    actual = S3Destination(bucket, key, suffix)
 
-    actual = dest.join_path("eggs")
-
-    assert expected == actual
+    assert expected == actual.key
 
 
 def test_s3_destination_put():
     from multiprocess_ftp.destinations import S3Destination
 
-    expected = "spam/eggs"
-    dest = S3Destination("eggs", "spam")
-    with patch(f"{SOURCE_PATH}.boto3.client"):
-        actual = dest.put("eggs", b"spam")
+    mock_s3 = Mock(
+        create_multipart_upload=Mock(
+            return_value={
+                "UploadId": "123",
+                "Bucket": "cheese",
+                "Key": "eggs/spam",
+            }
+        )
+    )
+    with patch(f"{SOURCE_PATH}.boto3.client", return_value=mock_s3):
+        with S3Destination("cheese", "eggs", "spam") as dest:
+            dest.put(1, b"body")
 
-    assert expected == actual
+    mock_s3.create_multipart_upload.assert_called_once_with(
+        Bucket="cheese", Key="eggs/spam"
+    )
+
+
+def test_s3_destination_raises_destination_exception():
+    from multiprocess_ftp.destinations import (
+        DestinationException,
+        S3Destination,
+    )
+
+    with patch(f"{SOURCE_PATH}.boto3"):
+
+        with pytest.raises(DestinationException):
+
+            with S3Destination("cheese", "eggs", "spam") as dest:
+                dest.put(part="l", body=None)
